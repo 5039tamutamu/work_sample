@@ -1,0 +1,251 @@
+\documentclass[a4j,twoside,twocolumn]{jarticle}
+\usepackage{graphicx,yanagi-resume}
+\usepackage{boxedminipage}
+\usepackage{listings, jlisting}
+\usepackage{framed}
+\usepackage{ascmac}
+
+\author{寺本周平}
+\seminar{2022年度 情報システム研究室 秋学期定期ゼミ資料}
+\date{2022年12月2日(金)}
+\title{衛星画像から自動的に影を検出し建物の高さを推定する研究}
+\totalpage{7}
+
+\lstset{
+  language=C,
+  basicstyle={\small},
+  identifierstyle={\small},
+  commentstyle={\small\itshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex,
+  showstringspaces=false
+}
+
+
+\begin{document}
+\maketitle
+\section{研究背景}
+近年センサ技術の発展に伴い，高解像度の衛星画像が得られるようになり，衛生画像から１棟単位の建物観測が可能となった．広い範囲を撮影できる衛生画像から建物の高さを推定することで都市計画，環境整備，自然災害による被害予測などに貢献することができる．\\
+　衛星画像から建物の高さを推定する際に使用する衛星画像の種類は主に３つある．１つ目は，光学センサ画像である[1]．光学センサ画像とは，光学センサーと呼ばれるデジタルカメラを搭載した光学衛星から地表を撮影した画像である．色を観測対象としておりカラー写真のようで見やすいが，夜間帯や雲で覆われている部分は見えない[2]．手法例として，光学センサ画像から影を検出して建物の高さ推定する方法がある[3][4]．2つ目は，合成開口レーダ(SAR)画像である[1]．SAR画像は，マイクロ波を出し，地表から反射して返ってきた波を用いて地表を観測する．波長が長いマイクロ波は雨雲を通過するため，悪天候や夜間帯でも観測可能である．光学センサ画像とSAR画像の比較を図1に示す[2]．手法例として，SARセンサの後方散乱モデルから建物の高さを推定するという方法がある[5]．3つ目は，Lidarデータである[1]．Lidarはレーダーを使った観測であり，レーダーを発射して返ってくるまでの時間からターゲットまでの距離が分かる[6]．光学センサ画像とSAR画像はターゲットを面として捉えているが，Lidarデータはターゲットを点群として捉える[7]．その点群データから建物の高さ以外に，形状などの情報を高精度で得られるが，高価であるため限られた国でしか行われていない[1]．Lidarデータを図2に示す[6]．\\
+　以上の３つの種類の中で光学センサ画像は最も安価に手に入れることができる[4]．よって本研究では光学センサ画像から影を検出し，建物の高さを推定することを目的とする．また先行研究での同様の研究では，手動での作業を必要とする方法が多い．その場合，多くのデータを扱う際に手間がかかるため実用化することが難しい。よって自動化することを目指す．\\
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{衛星画像比較.eps}
+    \caption{SAR画像（左）と光学センサ画像（右）の比較.}
+    \label{fig1}
+  \end{center}
+\end{figure}
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{Lidar.eps}
+    \caption{Lidarデータの画像.}
+    \label{fig2}
+  \end{center}
+\end{figure}
+
+
+
+\section{衛星画像の影抽出の自動化に向けて}
+本章では衛星画像の影抽出を自動で行うための方法について説明する．\\
+　第2.1節「Tellus[8]」では，衛星画像のデータセットを提供しているTellusについて説明する．\\
+　第2.2節「手動による衛星画像の影抽出」では，衛星画像に対して画像処理を行い，手動で建物，植生，影をラベル付けした．\\
+　第2.3節「衛星画像の影抽出の自動化」では，第3.1節で手動で衛星画像から影を抽出した内容を基に，自動で影を抽出する方法について提案する．\\
+\subsection{Tellus[8]}
+Tellusにより公開されている衛星画像のデータセットである．主に4種類（高解像度光学画像，広域光学画像，高解像度SAR画像，広域SAR画像）の衛星画像を含む．世界の様々な場所で撮影された衛星画像を入手することができる．\\
+\subsection{手動による衛星画像の影抽出}
+衛星画像から建物の影を手動で抽出する方法について説明する．本章では，Tellus[8]から取得したマレーシアの一部の衛星画像を使用した(図3)．衛星画像の色が濃い部分に影が含まれることが考えられる．よって色の濃さに決定づける画素の大きさを，閾値により分離する手法である二値化を衛生画像に対して行う．この際，閾値は63と設定した．この様子を図4に示す．次にクロージング処理を行う．クロージング処理とは，白の画素を広げる膨張処理を行った後に白の画素を狭める縮小処理を行うという処理である．これにより，黒のノイズを消去することができる．その様子を図5に示す．そしてオープニング処理を行う．オープニング処理とは，クロージング処理の逆であり，縮小処理を行った後に膨張処理を行う処理である．これにより，白のノイズを消去することができる．その様子を図6に示す．図6の白部分は図3の衛生画像の色の濃い部分である．よって，白部分には影(建物の影，植生の影)，建物，植生の3つのラベルが含まれる．本章では，これらの白部分を手動でラベル付けした。その様子を図7に示す．図7の白が影，薄いグレーが建物、濃いグレーが植生を示す．\\
+\subsection{衛星画像の影抽出の自動化}
+第2.2節で手動により衛星画像から影を抽出した．しかし影，建物，植生をラベル付けする際に手間がかかる．そこで二値化，クロージング処理，オープニング処理をされた画像に対して，影，建物，植生を自動でラベル付けする方法について考える．\\
+　まず建物は機械学習（教師あり学習）により抽出することができる．次に，植生に関しては正規化植生指数を適用して植生を抽出できる．正規化植生指数とは植物の近赤外線と可視赤外線の反射の特徴を利用し，-1から1で衛星画像内の植生の度合いを示すものだ．正規化植生指数に閾値を設けることで衛星画像内の植生部分を予測することができる[10]．正規化植生指数の式を次に示す．NERは近赤外線，REDは赤色の波長を示す．\\
+\begin{equation}
+正規化植生指数 = \frac{NER - RED}{NER + RED}
+\end{equation} 
+　最後に影に関しては，二値化された衛星画像の白部分から建物と植生を引くことで抽出できる．また，影部分が建物か植生どちらに隣接しているかで，建物の影か植生の影かを分類する．\\
+
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{マレーシア.eps}
+    \caption{マレーシアの一部[8].}
+    \label{fig3}
+  \end{center}
+\end{figure}
+
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{マレーシア二値化.eps}
+    \caption{二値化を行った様子(閾値63).}
+    \label{fig4}
+  \end{center}
+\end{figure}
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{マレーシアクロージング.eps}
+    \caption{クロージング処理を行った様子.}
+    \label{fig5}
+  \end{center}
+\end{figure}
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{マレーシアオープニング.eps}
+    \caption{オープニング処理を行った様子.}
+    \label{fig6}
+  \end{center}
+\end{figure}
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{マレーシアラベル付け.eps}
+    \caption{図6にラベル付けを行った様子.}
+    \label{fig7}
+  \end{center}
+\end{figure}
+
+\section{自動による衛星画像の影抽出}
+本章では，自動による影抽出を行った内容について説明する．\\
+　第3.1節「SpaceNet」では，衛星画像のデータセットであるSpaceNetについて説明する．\\
+　第3.2節「自動による建物の抽出」では，機械学習を用いた自動による建物の抽出について説明する．\\
+　第3.3節「自動による植生の抽出」では，正規化植生指数を用いた自動による植生の抽出について説明する．\\
+　第3.4節「自動による影の抽出」では，自動による影の抽出について説明する．\\
+
+\subsection{SpaceNet[9]}
+AWS(Amazon Web Services)により公開されている衛星画像のデータセットである．このデータセットには高解像度の衛星画像と，画像内の建物の位置がラベリングされた情報を含むデータが存在する．その内容を表1に示す．表1のように大量の衛生画像と，その建物に対応したラベルデータが含まれるため建物を機械学習により抽出する研究に有効である．また，画像の種類として青，緑，赤の波長を含む3バンドの画像と，薄い青，青，緑，黄，赤，濃い赤，赤外線1，赤外線2の波長を含む8バンド画像が存在する．この8バンド画像には赤色と赤外線の波長を含むため，正規化植生指数に応用することが可能である．各衛星画像はおよそ400×400ピクセルに分割された画像が公開されている．\\
+
+\begin{table}[hbtp]
+  \caption{SpaceNetの内容[9]．}
+  \label{table:data_type}
+  \centering
+  \begin{tabular}{lcr}
+    \hline
+    場所  & 範囲($km^{2}$) & 建物のラベル数  \\
+    \hline \hline
+    リオデジャネイロ  & 2544 &  382534 \\
+    ラスベガス  & 216  &  151367 \\
+    パリ  & 1030  &  23816\\
+    上海  &  1000  &  92015 \\
+    ハルツーム  &  765  &  35503\\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsection{自動による建物の抽出}
+機械学習を用いて衛星画像から建物を抽出する際に，GitHubのコード[11]を使用した．本章ではSpaceNet[9]のリオデジャネイロの衛星画像を使用した．まず衛星画像と建物のラベル画像（教師データ）を準備する．それぞれ図8，9に示す．建物のラベル画像はデータセットに含まれる建物の位置情報を可視化したものである．この衛星画像と建物のラベル画像は合計で6397ペアをデータセットから用意することができる．参考コード[11]ではこれらの画像を訓練データ：評価データ：テストデータ=7：1：2の割合にランダムに分割している．次にU-Netと呼ばれるCNN（Convolutional Neural Network）の既存の機械学習モデルにテストデータを適用してモデルの性能を評価する．テストデータの適合率は0.754，再現率は0.749，IoU（Intersection over Union)は0.602であった．IoUは建物の分類結果と建物のラベルの一致度を示す数値である．そしてCNNモデルに対して図7の衛星画像を適用した．その際のCNNによる建物の位置の予測ラベルを図10，図9の建物のラベルを図7の衛星画像に重ねた様子を図11に示す．\\
+　図10と図11を比較すると，ある程度の精度で建物の位置が予測できている．今後はこのモデルがリオデジャネイロ以外の地域の建物でも認識可能かを調べる必要がある．また今回は時間の都合上できなかったがより細かい精度に関する指標を出し，この予測値の信頼性を確かめる必要がある．\\
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{リオ.eps}
+    \caption{リオデジャネイロの一部[9].}
+    \label{fig8}
+  \end{center}
+\end{figure}
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{リオマスク.eps}
+    \caption{図8の建物のラベル.}
+    \label{fig9}
+  \end{center}
+\end{figure}
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{リオ予測値.eps}
+    \caption{図8に対する建物の予測ラベル.}
+    \label{fig10}
+  \end{center}
+\end{figure}
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{リオラベル.eps}
+    \caption{図8の建物の正解ラベルを衛星画像に重ねた様子.}
+    \label{fig11}
+  \end{center}
+\end{figure}
+
+\subsection{自動による植生の抽出}
+第2.3節で述べてように，正規化植生指数を用いることで理論上おおまかな植生の場所が特定可能である．SpaceNetの8バンド画像に含まれる赤色と近赤外線の波長を次の式に適用することで正規化植生指数を出すことができる．NERは近赤外線，REDは赤色の波長を示す．\\
+\begin{equation}
+正解化植生指数 = \frac{NER - RED}{NER + RED}
+\end{equation} 
+　今回は目視により閾値を0.8に設定した．その様子を図12に示す．\\
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{リオ植生.eps}
+    \caption{図8に正規化植生指数を適用した様子（閾値0.8）.}
+    \label{fig12}
+  \end{center}
+\end{figure}
+
+\subsection{自動による影の抽出}
+第2.3節で提案した自動で影を抽出する方法は，二値化した画像の白部分に対して，建物と植生をラベリングし，残った白部分に影が含まれるという方法であった．そこでまず図8のリオの衛星画像を閾値59で二値化し，クロージング処理とオープニング処理を施した様子を図13に示す．この時の閾値は目視で設定した．次に自動で抽出した建物の予測ラベルを図13に重ねた様子を図13に示す．理論上では図14の白部分に植生と影が含まれることになる．そこで自動により抽出した植生ラベルを図13に重ねた様子を図15に示す．図13の白部分のほとんどが植生と判定されてしまうため影を抽出することが出来なかった．理論上では図15の白部分に建物と影が含まれることになるが，白部分がほとんど無いため植生の抽出に大きく誤差が生じていると考えられる．植生の抽出が上手くできなかった原因として，閾値を目視で行っているため適切な値を選択できていない，正規化植生指数を閾値で区別する際に二値化を使ったが他に適切な手法があるといったことが考えられる．\\
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{リオ二値化.eps}
+    \caption{図8に対して二値化（閾値59）と画像処理を施した様子.}
+    \label{fig13}
+  \end{center}
+\end{figure}
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{リオ二値化建物.eps}
+    \caption{図13の上に建物の予測ラベルを重ねた様子.}
+    \label{fig14}
+  \end{center}
+\end{figure}
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{リオ二値化植生.eps}
+    \caption{図13の上に植生ラベルを重ねた様子.}
+    \label{fig15}
+  \end{center}
+\end{figure}
+
+\section{今後の計画}
+今後の計画は二値化の閾値設定や正規化植生指数の処理方法を勉強し，より正確に植生を抽出する方法を探る．また先行研究を調査し，影から建物の高さを推定する方法を学び，実装する．
+
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[clip,width=8.5cm]{今後の計画３.eps}
+　　\caption{j今後の計画.}
+    \label{fig16}
+  \end{center}
+\end{figure}
+
+\section{参考文献}
+\relax[1]山崎 文雄　et　al．“高解像度SAR画像の強度と位相情報を用いた高層建物の高さ推定，”　日本リモートセンシング学会誌，Vol．38(2)，pp．149-　162，2018．\\
+\relax[2]ITmediaビジネス，“ウクライナが日本に求めるSAR衛星データとは？　雲に覆われた地表も丸裸にする技術に迫る，”　https://www.itmedia.co.jp/business/articles/2203/18/\\news179.html，accessed：2022/6/21．\\
+\relax[3]榑林 雄飛　et　al．“高分解能衛星画像の影解析及び反復的3Dモデリングによる建物の高さ推定，”　日本リモートセンシング学会誌，Vol．38(2)，pp．137-　148，2018．\\
+\relax[4]三浦 弘之　et　al．“建物GISデータの更新を目的とした高分解能衛星画像からの建物の自動検出手法，”　地域安全学会論文集，Vol．5，pp．37-　44，2003．\\
+\relax[5]G Franceschetti et al. ``A canonical problem in electromagnetic backscattering from buildings, " IEEE transactions on geoscience and remote sensing, Vol.40 (8), pp.1787- 1801, 2002.\\
+\relax[6]PASCO，“パンシャープン画像とは，”　https://www.pasco.co.jp/recommend/word/word102/，accessed:2022/5/30．\\
+\relax[7]esriジャパン，“リサンプリング，”　accessed:2022/5/30．\\
+\relax[8]Tellus，“日本発の衛生データプラットフォーム，”　https://www.tellusxdp.com/ja/，accessed:2022/6/23．\\
+\relax[9]SpaceNet, ``SpaceNet2:Building Dtection v2, " https://spacenet.ai/spacenet-buildings-dataset-v2/, accessed:2022/10/9.\\
+\relax[10]KMT　DRONE　SERVICE，“NDVI(正規化植生指数)とは，”　https://kmtech.jp/drone/about-ndvi，accessed:2022/5/30．\\
+\relax[11]GitHub, ``spacenet building detection, " motokimura/spacenet building detection: Project to train/test convolutional neural networks to extract buildings from SpaceNet satellite imageries. (github.com), accessed:2022/11/7.\\
+
+
+
+
+\end{document}

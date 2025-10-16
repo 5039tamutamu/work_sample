@@ -1,0 +1,16 @@
+{ 10
+	move 10 36
+	{ 60
+		walk 0 -12
+		go_up 30
+	}
+	{ 60
+		walk 0 12
+		go_up 10
+	}
+	{ 60
+		walk 0 -12
+		go_up -10
+	}
+	move_up 5
+}

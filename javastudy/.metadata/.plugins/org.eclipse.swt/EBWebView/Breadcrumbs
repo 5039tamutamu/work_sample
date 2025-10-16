@@ -1,0 +1,157 @@
+0:21:51 Microsoft.UnloadController.ClearUnloadState
+0:21:51 Microsoft.Shutdown.TabStripModel.RunUnloadListenerBeforeClosing_false
+0:21:51 Microsoft.Shutdown.TabStripModel.InternalCloseTabsImpl_ClosedAll
+0:21:51 Microsoft.Shutdown.TabStripModel.SendDetachWebContentsNotifications
+0:21:51 Microsoft.UnloadController.ClearUnloadState
+0:21:51 Browser5 Close Tab5 at 0
+0:21:51 Tab5 WebContentsDestroyed
+0:21:51 Microsoft.UnloadController.TabStripEmpty
+0:21:51 Microsoft.UnloadController.IsUnclosableApp_IsNotWebApp
+0:21:51 Microsoft.UnloadController.HasCompletedUnloadProcessing_True
+0:21:51 Microsoft.Shutdown.OnWindowClosing
+0:21:51 Microsoft.UnloadController.IsUnclosableApp_IsNotWebApp
+0:21:51 Microsoft.UnloadController.HasCompletedUnloadProcessing_True
+0:21:51 Microsoft.Shutdown.OnWindowClosingPostClearBrowsingData_NoBrowsingDataCleared
+0:21:51 Widget Closed: BrowserFrame
+0:21:51 Microsoft.UnloadController.HasCompletedUnloadProcessing_True
+0:21:51 Microsoft.Shutdown.OnWindowClosing
+0:21:51 Microsoft.Browser_Removed
+0:24:06 Microsoft.NewBrowser_Popup
+0:24:06 Microsoft.BrowserList.AddBrowser
+0:24:06 Browser7 Insert active Tab7 at 0
+0:24:06 Tab7 StartNav138 #auto_toplevel
+0:24:06 Tab7 StartNav139 #typed
+0:24:06 Tab7 FinishNav138
+0:24:06 Tab7 PageLoad
+0:24:06 Tab7 FinishNav139
+0:24:06 Tab7 PageLoad
+0:24:06 Tab7 StartNav140 #typed
+0:24:06 Tab7 FinishNav140
+0:24:06 Tab7 PageLoad
+0:24:23 Tab7 StartNav141 #typed
+0:24:23 Tab7 FinishNav141
+0:24:23 Tab7 PageLoad
+0:24:30 Tab7 StartNav142 #typed
+0:24:30 Tab7 FinishNav142
+0:24:30 Tab7 PageLoad
+0:24:32 Tab7 StartNav143 #typed
+0:24:32 Tab7 FinishNav143
+0:24:32 Tab7 PageLoad
+0:24:35 Tab7 StartNav144 #typed
+0:24:35 Tab7 FinishNav144
+0:24:35 Tab7 PageLoad
+0:24:39 Tab7 StartNav145 #typed
+0:24:39 Tab7 FinishNav145
+0:24:39 Tab7 PageLoad
+0:30:05 Tab2 StartNav146 #typed
+0:30:05 Tab2 FinishNav146
+0:30:05 Tab2 PageLoad
+0:31:02 Tab2 StartNav147 #typed
+0:31:02 Tab2 FinishNav147
+0:31:02 Tab2 PageLoad
+0:31:16 Tab2 StartNav148 #typed
+0:31:16 Tab2 FinishNav148
+0:31:16 Tab2 PageLoad
+0:31:19 Tab2 StartNav149 #typed
+0:31:19 Tab2 FinishNav149
+0:31:19 Tab2 PageLoad
+0:31:23 Tab2 StartNav150 #typed
+0:31:23 Tab2 FinishNav150
+0:31:23 Tab2 PageLoad
+0:31:35 Tab2 StartNav151 #typed
+0:31:35 Tab2 FinishNav151
+0:31:35 Tab2 PageLoad
+0:31:36 Tab2 StartNav152 #typed
+0:31:36 Tab2 FinishNav152
+0:31:36 Tab2 PageLoad
+0:31:42 Tab2 StartNav153 #typed
+0:31:42 Tab2 FinishNav153
+0:31:42 Tab2 PageLoad
+0:31:47 Tab2 StartNav154 #typed
+0:31:47 Tab2 FinishNav154
+0:31:47 Tab2 PageLoad
+0:31:48 Tab2 StartNav155 #typed
+0:31:48 Tab2 FinishNav155
+0:31:48 Tab2 PageLoad
+0:31:49 Tab2 StartNav156 #typed
+0:31:49 Tab2 FinishNav156
+0:31:49 Tab2 PageLoad
+0:31:56 Tab2 StartNav157 #typed
+0:31:56 Tab2 FinishNav157
+0:31:56 Tab2 PageLoad
+0:32:06 Tab2 StartNav158 #typed
+0:32:06 Tab2 FinishNav158
+0:32:06 Tab2 PageLoad
+0:32:07 Tab2 StartNav159 #typed
+0:32:07 Tab2 FinishNav159
+0:32:07 Tab2 PageLoad
+0:32:11 Tab2 StartNav160 #typed
+0:32:11 Tab2 FinishNav160
+0:32:11 Tab2 PageLoad
+0:32:11 Tab2 StartNav161 #typed
+0:32:11 Tab2 FinishNav161
+0:32:11 Tab2 PageLoad
+0:32:17 Tab2 StartNav162 #typed
+0:32:17 Tab2 FinishNav162
+0:32:17 Tab2 PageLoad
+0:32:20 Tab2 StartNav163 #typed
+0:32:20 Tab2 FinishNav163
+0:32:20 Tab2 PageLoad
+0:32:21 Tab2 StartNav164 #typed
+0:32:21 Tab2 FinishNav164
+0:32:21 Tab2 PageLoad
+0:32:23 Tab2 StartNav165 #typed
+0:32:23 Tab2 FinishNav165
+0:32:23 Tab2 PageLoad
+0:32:25 Tab2 StartNav166 #typed
+0:32:25 Tab2 FinishNav166
+0:32:25 Tab2 PageLoad
+0:32:26 Tab2 StartNav167 #typed
+0:32:26 Tab2 FinishNav167
+0:32:26 Tab2 PageLoad
+0:32:27 Tab2 StartNav168 #typed
+0:32:27 Tab2 FinishNav168
+0:32:27 Tab2 PageLoad
+0:32:30 Tab2 StartNav169 #typed
+0:32:30 Tab2 FinishNav169
+0:32:30 Tab2 PageLoad
+0:32:33 Tab2 StartNav170 #typed
+0:32:33 Tab2 FinishNav170
+0:32:33 Tab2 PageLoad
+0:32:33 Tab2 StartNav171 #typed
+0:32:33 Tab2 FinishNav171
+0:32:33 Tab2 PageLoad
+0:32:39 Tab2 StartNav172 #typed
+0:32:39 Tab2 FinishNav172
+0:32:39 Tab2 PageLoad
+0:32:40 Tab2 StartNav173 #typed
+0:32:40 Tab2 FinishNav173
+0:32:40 Tab2 PageLoad
+0:32:40 Tab2 StartNav174 #typed
+0:32:40 Tab2 FinishNav174
+0:32:40 Tab2 PageLoad
+0:33:33 Tab2 StartNav175 #typed
+0:33:33 Tab2 FinishNav175
+0:33:33 Tab2 PageLoad
+0:33:44 Tab2 StartNav176 #typed
+0:33:44 Tab2 FinishNav176
+0:33:44 Tab2 PageLoad
+0:33:45 Tab2 StartNav177 #typed
+0:33:45 Tab2 FinishNav177
+0:33:45 Tab2 PageLoad
+0:33:51 Tab2 StartNav178 #typed
+0:33:51 Tab2 FinishNav178
+0:33:51 Tab2 PageLoad
+0:33:54 Tab2 StartNav179 #typed
+0:33:54 Tab2 FinishNav179
+0:33:54 Tab2 PageLoad
+0:33:55 Tab2 StartNav180 #typed
+0:33:55 Tab2 FinishNav180
+0:33:55 Tab2 PageLoad
+0:34:05 Tab2 StartNav181 #typed
+0:34:05 Tab2 FinishNav181
+0:34:05 Tab2 PageLoad
+0:34:07 Tab2 StartNav182 #typed
+0:34:07 Tab2 FinishNav182
+0:34:07 Tab2 PageLoad
+0:37:12 Microsoft.UnloadController.IsUnclosableApp_IsNotWebApp

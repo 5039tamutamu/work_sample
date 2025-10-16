@@ -1,0 +1,388 @@
+%2015/12/9石塚祐貴改定
+%ファイル名を「yanagi-thesis.sty」→「islab-thesis.sty」に変更
+%
+%2014/1/4後藤智哉改定
+%指導教授　⇒　指導教員　に変更
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+%% 非公式・柳澤研究室論文用スタイルファイル Version 0.13 (2004-02-12)
+%% 
+%%                          2003年度 柳澤研究室 修士2年
+%%                          小原俊逸 (kohara@yanagi.comm.waseda.ac.jp)
+%% 注意事項
+%% 
+%%   1. このスタイルファイルは次の前提で作られています．
+%%      (a) 柳澤研究室における論文原稿を作成する．
+%%      (b) pLaTeX2eの最新版を使用する．
+%%      (c) 以下に示す使い方を遵守する．
+%%   2. 常に最新版を使うことをオススメします．
+%%      http://www.yanagi.comm.waseda.ac.jp/~kohara/
+%%   3. バグ修正・要望などは受けつけますが，これを修正・実装する義務は
+%%      ないものとします．
+%%   4. このスタイルファイルを使用して起きたいかなる損害についても
+%%      作者は責任を負いません．
+%% 
+%% 使い方
+%% 
+%%   1. pLaTeX2eのjreportクラスをオプションa4j,12ptで使いましょう．
+%% 
+%% \documentclass[a4j,12pt]{jreport}
+%% 
+%%   2. これ(islab-thesis.sty)を使いましょう．
+%% 
+%% \usepackage{islab-thesis}
+%% 
+%%   3. 論文名(?)を入力しましょう．
+%% 
+%% \thesis{2001年度 卒業論文}
+%% 
+%%   4. 縦書き用の論文名(?)を入力しましょう．
+%% 
+%% \thesist{二○○一年度~~卒業論文}
+%% 
+%%   5. 表題を入力しましょう．
+%% 
+%% \title{ハードウェアの応答時間を考慮した\\
+%% プロセッサコア合成に関する研究}
+%% 
+%%   6. 縦書き用の表題を入力しましょう．
+%% 
+%% \titlet{ハードウェアの応答時間を考慮した
+%% プロセッサコア合成に関する研究}
+%% 
+%%   7. 大学，学部，学科を入力しましょう．
+%% 
+%% \department{早稲田大学理工学部 電子・情報通信学科} 
+%% 
+%%   8. 指導教授を入力しましょう．
+%% 
+%% \professor{柳澤 政生}
+%% 
+%%   9. 学籍番号を入力しましょう．
+%% 
+%% \studentnumber{G98G056--5}
+%% 
+%%  10. 著者を入力しましょう．
+%% 
+%% \author{小原 俊逸}
+%% 
+%%  11. 著者の英語表記を入力しましょう．
+%% 
+%% \authore{Shunitsu Kohara}
+%% 
+%%  12. 日付を入力しましょう．
+%% 
+%% \date{2002年2月12日}
+%% 
+%%  13. 文書を始めましょう．
+%%      (注:その前にプリアンブルでやっておくことはやっておきましょう)
+%% 
+%% \begin{document}
+%% 
+%%  14. タイトルを作りましょう．
+%% 
+%% \maketitle
+%% 
+%%  15. 目次を作りましょう．
+%% 
+%% \tableofcontents
+%%  
+%%  16. 第1章を書きましょう．
+%%
+%% \chapter{序論}
+%% 
+%%  17. 第1章第1節を書きましょう．
+%% 
+%% \section{本論文の背景と意義}
+%% 
+%% ...... ..... .... ... .. .
+%% 
+%%  -4. 謝辞を書きましょう．
+%% 
+%% \gratitude
+%% 皆様に感謝．
+%% 
+%%  -3. 参考文献を書きましょう．
+%% 
+%% \begin{thebibliography}{99}
+%% \bibitem{小原01} 小原 俊逸, 非公式・柳澤研究室論文用スタイルファイル, 2002.
+%% \end{thebibliography}
+%% 
+%%  -2. 文書を終えましょう．
+%% 
+%% \end{document}
+%% 
+%%  -1. カバーを作りましょう．
+%% 
+%% \makecover
+%% 
+%%   0. ファイルを保存しましょう :-)
+%% 
+%% ※ chapter毎や，参考文献など，別ファイルに分割して
+%%    \includeとか\inputとかするのもいいでしょう．
+%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ProvidesPackage{islab-thesis}
+\RequirePackage{boxedminipage,plext}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% thesis 論文名
+\global\let\@thesis\@empty
+\def\thesis#1{\gdef\@thesis{#1}}
+% professor 指導教員
+\global\let\@professor\@empty
+\def\professor#1{\gdef\@professor{#1}}
+% department 学科
+\global\let\@department\@empty
+\def\department#1{\gdef\@department{#1}}
+% studentnumber 学籍番号
+\global\let\@studentnumber\@empty
+\def\studentnumber#1{\gdef\@studentnumber{#1}}
+% authore 氏名の英語表記
+\global\let\@authore\@empty
+\def\authore#1{\gdef\@authore{#1}}
+
+% \maketitle再定義 (適当)
+\def\maketitle{%
+\thispagestyle{empty}
+\begin{center}
+\LARGE
+\vfill
+\@thesis
+\vskip\baselineskip
+\@title
+\vskip\baselineskip
+指導教員~~\@professor~~教授
+\vfill
+\@department\par
+\@studentnumber\par
+\@author\\
+\@authore\\
+{\Large\@date}
+%\vfill
+\end{center}
+\setcounter{page}{0} % 邪道?
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ベースライン伸張
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\baselinestretch}{1.3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% レイアウト
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 1. 論文は右ページのみになる．
+% 2. 左マージンが少し大きいくらい.
+
+% 横
+\setlength{\oddsidemargin}{1.5in}
+\addtolength{\oddsidemargin}{-1in}
+\setlength{\evensidemargin}{\oddsidemargin}
+\setlength{\textwidth}{36zw}
+
+% 縦
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{38\baselineskip} % 30 * 1.3(baselinestretch) = 39
+\addtolength{\textheight}{\topskip}
+\setlength{\footskip}{0.6in}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 章 (chapter)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 1. レイアウトを変える。1ページにセンタリング。
+% 2. 結論のときインデントして欲しいので\@afterindenttrue
+
+\def\@makechapterhead#1{\hbox{}%
+  \vfill
+  \begin{center}
+  {\reset@font\huge\bfseries
+  \leavevmode
+  \ifnum \c@secnumdepth >\m@ne
+    \@chapapp\thechapter\@chappos
+    \vskip\baselineskip
+    #1
+  \else
+    #1\relax
+  \fi}
+  \end{center}
+  \vfill
+  \clearpage
+  \@afterindenttrue
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 節 (section)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 1. デフォルトの定義の最初に\clearpageしただけ．
+
+\let\@@section\section
+\def\section{\clearpage\@@section}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ヘッダ・フッタ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 1. ヘッダには右寄りで「第x章 ○○」
+% 2. フッタには中央にページ数
+
+\def\ps@yanagithesis{\let\@mkboth\@gobbletwo
+   \def\@oddhead{\reset@font\hfil\leftmark}%
+   \def\@oddfoot{\reset@font\hfil\thepage\hfil}%
+   \let\@evenhead\@oddhead
+   \let\@evenfoot\@oddfoot
+   \def\chaptermark##1{\markboth{%
+      \ifnum \c@secnumdepth >\m@ne
+         \@chapapp\thechapter\@chappos\hskip1zw
+      \fi
+      ##1}{}}%
+}
+\pagestyle{yanagithesis}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \chapter*
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 目次，謝辞，参考文献は\chapter*で出しているので，再定義
+% 1. tocに出すようにする (\addcontentsline)
+% 2. ヘッダに出すようにする (\markboth)
+
+\def\@schapter#1{%
+  \@makeschapterhead{#1}%
+  \addcontentsline{toc}{chapter}{#1}%
+  \markboth{#1}{#1}%
+  \@afterheading%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 目次
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 1. 目次の行間を調整する (\baselineskip)
+% 2. 改変\chapter*のaddcontentslineを無効化する(=目次に出さない)
+% 3. 章がページに入りきらないと改ページするのを抑制。
+%    (latex.ltxの\@starttocの\@nobreakfalseが原因)
+
+\let\@@tableofcontents\tableofcontents
+\def\tableofcontents{%
+  \def\@nobreakfalse{}%
+  \global\let\@@addcontentsline\addcontentsline%
+  \def\addcontentsline##1##2##3{}%
+  \@@tableofcontents%
+  \global\let\addcontentsline\@@addcontentsline%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 謝辞
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 1. デフォルトのchapterと同じ表記で，
+% 2. インデントして欲しいので\@afterindenttrue
+
+\newcommand{\gratitude}{%
+\chapter*{謝辞}%
+\@afterindenttrue%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 参考文献
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 1. jreportでは「関連図書」になるので，これを「参考文献」にする．
+
+\renewcommand{\bibname}{参考文献}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \makecover
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% thesist (縦書用)論文名
+\global\let\@thesist\@empty
+\def\thesist#1{\gdef\@thesist{#1}}
+% titlet (縦書用)表題
+\global\let\@titlet\@empty
+\def\titlet#1{\gdef\@titlet{#1}}
+
+% \makecover
+\def\makecover{%
+\clearpage%
+\setcounter{page}{0}
+\setlength{\oddsidemargin}{\paperwidth}%
+\addtolength{\oddsidemargin}{-\textwidth}%
+\addtolength{\oddsidemargin}{-2in}%
+\setlength{\oddsidemargin}{.5\oddsidemargin}%
+\pagestyle{empty}%
+
+\renewcommand{\baselinestretch}{.8}
+\bfseries\LARGE
+\setlength{\fboxrule}{2pt}%
+
+\begin{center}
+\vspace*{\baselineskip}
+\begin{boxedminipage}{\textwidth}
+\begin{center}
+\vspace*{\baselineskip}
+\@thesis\par
+\vspace*{1.5\baselineskip}
+\@title\par
+\vspace*{1.5\baselineskip}
+指導教員~~~\@professor~~~教授\par
+\vspace*{\baselineskip}
+\end{center}
+\end{boxedminipage}
+
+\vfill
+
+\begin{boxedminipage}{\textwidth}
+\begin{center}
+\renewcommand{\baselinestretch}{.5}\Large
+\vspace*{\baselineskip}
+\@department\par
+\vspace*{\baselineskip}
+\@studentnumber\par
+\vspace*{\baselineskip}
+{\LARGE
+\@author\par
+\vspace*{.5\baselineskip}
+\@authore}
+\vspace*{\baselineskip}
+\end{center}
+\end{boxedminipage}
+\vspace*{\baselineskip}
+\end{center}
+
+\newpage
+\setlength{\topmargin}{-1in}
+\addtolength{\topmargin}{1cm}
+\setlength{\headheight}{0pt}
+\setlength{\headsep}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\oddsidemargin}{0pt}
+\newdimen\@coverheight
+\setlength{\@coverheight}{\paperheight}
+\addtolength{\@coverheight}{-2cm}
+
+\def\@backtitlebox##1{\makebox(0,0)[t]{\parbox<t>{\@coverheight}{##1}}}
+\def\@backtitlecontent{\@thesist\hfill\@titlet\hfill\@author}
+
+\noindent%
+\unitlength=1cm%
+\begin{picture}(0,0)
+ \put(0,0){\@backtitlebox{\tiny\@backtitlecontent}}
+ \put(2,0){\@backtitlebox{\scriptsize\@backtitlecontent}}
+ \put(4,0){\@backtitlebox{\footnotesize\@backtitlecontent}}
+ \put(6,0){\@backtitlebox{\small\@backtitlecontent}}
+ \put(8,0){\@backtitlebox{\normalsize\@backtitlecontent}}
+ \put(10,0){\@backtitlebox{\large\@backtitlecontent}}
+ \put(12,0){\@backtitlebox{\Large\@backtitlecontent}}
+ \put(14,0){\@backtitlebox{\LARGE\@backtitlecontent}}
+\end{picture}}
