@@ -4,8 +4,9 @@ public class Hello{
 		System.out.println(funcTest(2, 3));
 	}
 	public static int funcTest(int a, int b){
-		int c = 0;
-		return c = a + b;
+		//int c = 0;
+		//int c = a + b;
+		return a + b;
 	}
 
 }
